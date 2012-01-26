@@ -29,6 +29,6 @@ let python_highlight_all=1
 let g:user_zen_expandabbr_key = '<c-e>'
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 
-
+nnoremap <silent> <F1> :TlistToggle<CR>
 
 
