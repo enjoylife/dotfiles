@@ -2,6 +2,8 @@ set runtimepath+=$HOME/.vim/
 set runtimepath+=$HOME/.vim/after/ftplugins/html
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 
+map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
+
 colors wombat
 "auto read a file when changed externally
 set autoread
@@ -17,8 +19,8 @@ set number
 " Toggle line numbers
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 
-"let g:pydiction_location='/home/matthew/.vim/pydiction/complete-dict'
 let g:SuperTabDefaultCompletionType = "context"
+
 " Turn backup off, since most stuff is in SVN, git anyway...
 set nobackup
 set nowb
