@@ -41,7 +41,6 @@ set numberwidth=4   " line numbering takes up 5 spaces
 set ignorecase      " ignore case when searching
 set wrap          " stop lines from wrapping
 filetype plugin indent on " turn on the indent plugins
-
 " Omnicompletion functions
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
@@ -60,3 +59,5 @@ map <silent><A-Left> :tabprevious<CR>   " map Alt-LeftArrow to jump to the previ
 syntax enable                 " syntax highlighing
 autocmd BufEnter *.j2 set filetype=htmljinja
 autocmd BufEnter *.html set filetype=htmljinja
+autocmd BufEnter *.py set filetype=python
+autocmd BufEnter *.md set filetype=markdown
