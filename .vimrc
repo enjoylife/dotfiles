@@ -29,7 +29,6 @@ set noswapfile
 set nocompatible    " use vim defaults
 set number          " show line numbers
 
-set textwidth=80
 set expandtab       " tabs are converted to spac
 set tabstop=4       " numbers of spaces of tab character
 set shiftwidth=4    " numbers of spaces to (auto)indent
@@ -39,7 +38,13 @@ set incsearch       " do incremental searching
 set ruler           " show the cursor position all the time
 set numberwidth=4   " line numbering takes up 5 spaces
 set ignorecase      " ignore case when searching
+
 set wrap          " stop lines from wrapping
+set linebreak
+set nolist  " list disables linebreak
+set textwidth=0
+set wrapmargin=0
+set formatoptions+=l
 filetype plugin indent on " turn on the indent plugins
 " Omnicompletion functions
 autocmd FileType python set omnifunc=pythoncomplete#Complete
