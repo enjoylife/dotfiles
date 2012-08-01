@@ -8,7 +8,7 @@ filetype plugin indent on " turn on the indent plugins
 set autoread "auto read a file when changed externally
 
 " Requires solarized color scheme
-set background=light
+set background=dark
 colorscheme solarized
 
 " quick checking of a python program
@@ -17,6 +17,8 @@ map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 " Toggle line numbers
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 
+map f za
+
 "Ignores case when searching
 set ignorecase
 set smartcase
@@ -24,9 +26,9 @@ set showmatch "shows matching brackets or braces when over them
 set number "Show line numbering
 
 " Turn backup off, since most stuff in git anyway...
-"set nobackup
-"set nowb
-"set noswapfile
+set nobackup
+set nowb
+set noswapfile
 
 set nocompatible    " use vim defaults
 set number          " show line numbers
@@ -56,12 +58,23 @@ autocmd BufEnter *.md set filetype=markdown
 " PLUGIN SETTINGS
 """""""""""""""""
 
+" use ghc functionality for haskell files
+au Bufenter *.hs compiler ghc
+
+" switch on syntax highlighting
+syntax on
+
+" enable filetype detection, plus loading of filetype plugins
+filetype plugin on
+" Configure browser for haskell_doc.vim
+let g:haddock_browser = "/usr/bin/google-chrome"
+let g:haddock_browser_callformat = "%s %s"
 "Requires syntastic plugin
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-
+let g:ghcmod_hlint_options = ['--ignore=Redundant $']
 
 " Requires nerdtree plugin
 " Easy file system access
@@ -84,10 +97,10 @@ let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
-"let g:neocomplcache_dictionary_filetype_lists = {
-"    \ 'default' : '',
-"    \ 'vimshell' : $HOME.'/.vimshell_hist',
-"    \ }
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ }
 
 " Define keyword.
 if !exists('g:neocomplcache_keyword_patterns')
@@ -128,4 +141,7 @@ autocmd FileType haskell setlocal omnifunc=omnifunc=necoghc#omnifunc
 " Enable heavy omni completion.
 if !exists('g:neocomplcache_omni_patterns')
   let g:neocomplcache_omni_patterns = {}
+" Updates the data_sets to match new axis scales
 endif
+
+
