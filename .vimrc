@@ -1,23 +1,38 @@
-set runtimepath+=$HOME/.vim/
+set runtimepath+=$HOME/.vim/plugins
+set runtimepath+=$HOME/.vim/plugins/neocomplcache/.*
 set runtimepath+=$HOME/.vim/after/ftplugins/html
-let $PATH = $PATH . ':' . expand("~/.cabal/bin")
 
+"set nocompatible=on   " use vim defaults
 syntax enable                 " syntax highlighing
 filetype plugin indent on " turn on the indent plugins
-
+autocmd VimEnter * NERDTree
 set autoread "auto read a file when changed externally
 
-" Requires solarized color scheme
-set background=dark
-colorscheme solarized
+" Favorite Color Scheme
+if has("gui_running")
+    " Requires solarized color scheme
+    set background=dark
+    colorscheme solarized
 
+
+   " Remove Toolbar
+   set guioptions-=T
+   "Terminus is AWESOME
+   "set guifont=Terminus\ 9
+else
+endif
 " quick checking of a python program
 map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 
 " Toggle line numbers
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
+set foldnestmax=3
+set foldmethod=syntax
+
 
 map f za
+map <S-f> zR
+map <F1> gqG
 
 "Ignores case when searching
 set ignorecase
@@ -30,7 +45,6 @@ set nobackup
 set nowb
 set noswapfile
 
-set nocompatible    " use vim defaults
 set number          " show line numbers
 set expandtab       " tabs are converted to spac
 set tabstop=4       " numbers of spaces of tab character
@@ -48,40 +62,48 @@ set textwidth=0
 set wrapmargin=0
 set formatoptions+=l
 
+autocmd BufNewFile,BufRead *.c set formatprg=astyle\ -A10z3cZEHSk3W3pn
+"-A8T8SLWYUk3pb
 
 autocmd BufEnter *.j2 set filetype=htmljinja
-autocmd BufEnter *.html set filetype=htmljinja
+autocmd BufEnter *.html set filetype=html
 autocmd BufEnter *.py set filetype=python
 autocmd BufEnter *.md set filetype=markdown
-"autocmd BufEnter *.hs set filetype=haskell
+autocmd BufEnter *.hs set filetype=haskell
 
 " PLUGIN SETTINGS
 """""""""""""""""
+"REQUIRED: nerdtree plugin
+set completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
-" use ghc functionality for haskell files
-au Bufenter *.hs compiler ghc
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+" open omni completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+" open user completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+" Easy file system access
+nmap <silent> <c-n> :NERDTreeToggle<CR>
 
-" switch on syntax highlighting
-syntax on
 
-" enable filetype detection, plus loading of filetype plugins
-filetype plugin on
-" Configure browser for haskell_doc.vim
-let g:haddock_browser = "/usr/bin/google-chrome"
-let g:haddock_browser_callformat = "%s %s"
 "Requires syntastic plugin
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+let g:syntastic_c_include_dirs = [ 'src' ]
+
 let g:ghcmod_hlint_options = ['--ignore=Redundant $']
 
-" Requires nerdtree plugin
-" Easy file system access
-nmap <silent> <c-n> :NERDTreeToggle<CR>
 
 
-" Requires neocompletecache 
+
+
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -100,6 +122,7 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
     \ }
 
 " Define keyword.
@@ -115,7 +138,7 @@ inoremap <expr><C-g>     neocomplcache#undo_completion()
 inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
 " SuperTab like snippets behavior.
-imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
@@ -128,6 +151,15 @@ inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
+" AutoComplPop like behavior.
+"let g:neocomplcache_enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplcache_enable_auto_select = 1
+"let g:neocomplcache_disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<TAB>"
+"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -135,13 +167,13 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType haskell setlocal omnifunc=omnifunc=necoghc#omnifunc
-"
 
 " Enable heavy omni completion.
 if !exists('g:neocomplcache_omni_patterns')
   let g:neocomplcache_omni_patterns = {}
-" Updates the data_sets to match new axis scales
 endif
-
-
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
+let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
