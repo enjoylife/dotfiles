@@ -1,9 +1,7 @@
 call pathogen#infect()
 
-"set nocompatible=on   " use vim defaults
 syntax enable                 " syntax highlighing
 filetype plugin indent on " turn on the indent plugins
-autocmd VimEnter * NERDTree
 set autoread "auto read a file when changed externally
 
 " Favorite Color Scheme
@@ -24,14 +22,17 @@ map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 
 " Toggle line numbers
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
-set foldnestmax=3
+"set foldnestmax=3
 set foldmethod=syntax
 
 
 map f za
 map <S-f> zR
 map <F1> gqG
+map <C-f> gqG
+"map <C-F>gq][
 
+set ffs=unix
 "Ignores case when searching
 set ignorecase
 set smartcase
@@ -61,6 +62,5 @@ set wrapmargin=0
 set formatoptions+=l
 
 autocmd BufNewFile,BufRead *.c set formatprg=astyle\ -A10z3cZEHSk3W3pn
-"-A8T8SLWYUk3pb
-
+"-A8T8SLWYUk3pb "old astyle pref
 nmap <silent> <c-n> :NERDTreeToggle<CR>
