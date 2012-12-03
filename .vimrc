@@ -7,14 +7,14 @@ set autoread "auto read a file when changed externally
 " Favorite Color Scheme
 if has("gui_running")
     " Requires solarized color scheme
-    set background=dark
-    colorscheme solarized
+    "set background=dark
+    "colorscheme solarized
 
 
    " Remove Toolbar
    set guioptions-=T
    "Terminus is AWESOME
-   "set guifont=Terminus\ 9
+   set guifont=Terminus\ 9
 else
 endif
 " quick checking of a python program
