@@ -8,7 +8,6 @@ set autoread "auto read a file when changed externally
 if has("gui_running")
     " Requires solarized color scheme
     "set background=dark
-    "colorscheme solarized
 
 
    " Remove Toolbar
@@ -26,6 +25,7 @@ nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 set foldmethod=syntax
 
 
+colorscheme obsidian 
 map f za
 map <S-f> zR
 map <F1> gqG
