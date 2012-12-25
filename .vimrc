@@ -4,18 +4,6 @@ syntax enable                 " syntax highlighing
 filetype plugin indent on " turn on the indent plugins
 set autoread "auto read a file when changed externally
 
-" Favorite Color Scheme
-if has("gui_running")
-    " Requires solarized color scheme
-    "set background=dark
-
-
-   " Remove Toolbar
-   set guioptions-=T
-   "Terminus is AWESOME
-   set guifont=Terminus\ 9
-else
-endif
 " quick checking of a python program
 map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 
@@ -24,8 +12,21 @@ nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 "set foldnestmax=3
 set foldmethod=syntax
 
+" Favorite Color Scheme
+if has("gui_running")
+    " Requires solarized color scheme
+    "set background=dark
 
-colorscheme obsidian 
+    colorscheme obsidian 
+
+   " Remove Toolbar
+   set guioptions-=T
+   "Terminus is AWESOME
+   set guifont=Terminus\ 9
+else
+
+endif
+
 map f za
 map <S-f> zR
 map <F1> gqG
@@ -61,6 +62,7 @@ set textwidth=0
 set wrapmargin=0
 set formatoptions+=l
 
+autocmd BufRead,BufNewFile  *.md,*.txt,*.TXT set filetype=markdown
 autocmd BufNewFile,BufRead *.c set formatprg=astyle\ -A10z3cZEHSk3W3pn
 "-A8T8SLWYUk3pb "old astyle pref
 nmap <silent> <c-n> :NERDTreeToggle<CR>
