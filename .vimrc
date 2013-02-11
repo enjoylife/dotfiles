@@ -1,44 +1,36 @@
-call pathogen#infect()
+call pathogen#infect()    " package system
+set rtp+=$GOROOT/misc/vim " for go development
 
-syntax enable                 " syntax highlighing
-filetype plugin indent on " turn on the indent plugins
-set autoread "auto read a file when changed externally
 
-" quick checking of a python program
-map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
-
-" Toggle line numbers
-nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
-"set foldnestmax=3
-set foldmethod=syntax
+" Can't live without in editer file traversal :)
+nmap <silent> <c-n> :NERDTreeToggle<CR>
 
 " Favorite Color Scheme
 if has("gui_running")
-    " Requires solarized color scheme
-    "set background=dark
-
-    colorscheme obsidian 
-
-   " Remove Toolbar
-   set guioptions-=T
-   "Terminus is AWESOME
-   set guifont=Terminus\ 9
+   colorscheme obsidian 
+   set guioptions-=T       " Remove Toolbar
+   set guifont=Terminus\ 7 " Terminus is AWESOME
 else
 
 endif
 
-map f za
+set foldmethod=syntax     " predictable folding
+" Simpler (un)folding
+map f za         
 map <S-f> zR
-map <F1> gqG
-map <C-f> gqG
-"map <C-F>gq][
 
-set ffs=unix
-"Ignores case when searching
-set ignorecase
-set smartcase
-set showmatch "shows matching brackets or braces when over them
-set number "Show line numbering
+" Easier code formating 
+map <C-f> gqG
+
+syntax on                 " syntax highlighing
+filetype plugin indent on " turn on the indent plugins
+set autoread              " reload file when changed externally
+
+set ffs=unix   " EOL character convetion
+set ignorecase " Ignores case when searching
+set smartcase  " Overides ignore if search has uppercase
+set showmatch  " Shows matching brackets or braces when over them
+set number     " Show line numbering
 
 " Turn backup off, since most stuff in git anyway...
 set nobackup
@@ -62,7 +54,17 @@ set textwidth=0
 set wrapmargin=0
 set formatoptions+=l
 
+
+" quick checking of a python program
+map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
+
+" Toggle line numbers
+nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
+
+autocmd FileType go autocmd BufWritePre <buffer> Fmt " go devel
+
 autocmd BufRead,BufNewFile  *.md,*.txt,*.TXT set filetype=markdown
-autocmd BufNewFile,BufRead *.c set formatprg=astyle\ -A10z3cZEHSk3W3pn
+autocmd BufRead,BufNewFile  *.html,*.jinja set filetype=htmldjango
+
 "-A8T8SLWYUk3pb "old astyle pref
-nmap <silent> <c-n> :NERDTreeToggle<CR>
+autocmd BufNewFile,BufRead *.c,*.h  set formatprg=astyle\ -A10z3cZEHSk3W3pn
