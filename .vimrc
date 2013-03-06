@@ -5,6 +5,9 @@ set rtp+=$GOROOT/misc/vim " for go development
 " Can't live without in editer file traversal :)
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 
+"gitgutter
+highlight clear SignColumn
+
 " Favorite Color Scheme
 if has("gui_running")
    colorscheme obsidian 
