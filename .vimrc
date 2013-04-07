@@ -1,12 +1,16 @@
 call pathogen#infect()    " package system
 set rtp+=$GOROOT/misc/vim " for go development
 
+sign define dummy
+execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
+
 
 " Can't live without in editer file traversal :)
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 
 "gitgutter
 highlight clear SignColumn
+nmap <silent> <c-g> : GitGutterToggle<CR>
 
 " Favorite Color Scheme
 if has("gui_running")
