@@ -1,16 +1,23 @@
 call pathogen#infect()    " Package system
 set rtp+=$GOROOT/misc/vim " For go development (syntax, indentation,etc)
 
-"EXT: nerdtree ...Just can't live without in editer file traversal
+"PLUGIN: nerdtree ...Just can't live without in editer file traversal
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 
-"EXT: gitgutter ...Shows git diff 
+"PLUGIN: gitgutter ...Shows git diff 
 highlight clear SignColumn
 nmap <silent> <c-g> : GitGutterToggle<CR>
 sign define dummy
 execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 
-"EXT: vim-javascript ...Better indentation, highlighting, etc
+"PLUGIN: syntastic
+let syntastic_mode_map = { 'passive_filetypes': ['html'] }
+
+"PLUGIN: zencoding
+let g:user_zen_expandabbr_key = '<c-z>'
+let g:use_zen_complete_tag = 1
+
+"PLUGIN: vim-javascript ...Better indentation, highlighting, etc
 let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
@@ -18,7 +25,8 @@ let g:html_indent_style1 = "inc"
 if has('gui_running')
     set background=light           " Prefer light in gui
     set guioptions-=T              " Remove Toolbar
-    set guifont=Terminus\ 7        " Terminus is AWESOME
+    "set guifont=Terminus\ 7        " Terminus is AWESOME
+    set guifont=Menlo\ Regular:h12
 else
     let g:solarized_termcolors=256 "Pretty even in terminal
     set t_Co=256                   "Terminal support in general
