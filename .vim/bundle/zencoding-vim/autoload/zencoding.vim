@@ -1,7 +1,7 @@
 "=============================================================================
 " zencoding.vim
 " Author: Yasuhiro Matsumoto <mattn.jp@gmail.com>
-" Last Change: 26-Mar-2013.
+" Last Change: 24-Apr-2013.
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -157,9 +157,13 @@ function! zencoding#toString(...)
   else
     let group_itemno = 0
   endif
+  if a:0 > 5
+    let indent = a:6
+  else
+    let indent = ''
+  endif
 
   let dollar_expr = zencoding#getResource(type, 'dollar_expr', 1)
-  let indent = zencoding#getIndentation(type)
   let itemno = 0
   let str = ''
   let use_pipe_for_cursor = zencoding#getResource(type, 'use_pipe_for_cursor', 1)
@@ -198,7 +202,7 @@ function! zencoding#toString(...)
         if len(current.value)
           let text = current.value[1:-2]
           if dollar_expr
-            let text = substitute(text, '\%(\\\)\@\<!\(\$\+\)\([^{#]\|$\)', '\=printf("%0".len(submatch(1))."d", itemno+1).submatch(2)', 'g')
+            let text = substitute(text, '\%(\\\)\@\<!\(\$\+\)\([^{#]\|$\)', '\=printf("%0".len(submatch(1))."d", max([itemno, group_itemno])+1).submatch(2)', 'g')
             let text = substitute(text, '\${nr}', "\n", 'g')
             let text = substitute(text, '\\\$', '$', 'g')
           endif
@@ -207,8 +211,9 @@ function! zencoding#toString(...)
       endif
       let inner = ''
       if len(current.child)
+        let render_type = zencoding#getFileType(1)
         for n in current.child
-          let inner .= zencoding#toString(n, type, inline, filters, group_itemno)
+          let inner .= zencoding#toString(n, type, inline, filters, group_itemno, indent)
         endfor
       endif
       let spaces = matchstr(str, '\s*\ze\${child}')
@@ -256,12 +261,20 @@ function! zencoding#getResource(type, name, default)
   return ret
 endfunction
 
-function! zencoding#getFileType()
+function! zencoding#getFileType(...)
+  let flg = get(a:000, 0, 0)
   let type = &ft
   if zencoding#lang#exists(&ft)
     let type = &ft
   else
-    let type = zencoding#getBaseType(type)
+    let base = zencoding#getBaseType(type)
+    if base != ""
+      if flg
+        let type = &ft
+      else
+        let type = base
+      endif
+    endif
   endif
   if type == 'html'
     let type = synIDattr(synID(line("."), col("."), 1), "name")
@@ -284,6 +297,8 @@ endfunction
 
 function! zencoding#expandAbbr(mode, abbr) range
   let type = zencoding#getFileType()
+  let rtype = zencoding#getFileType(1)
+  let indent = zencoding#getIndentation(type)
   let expand = ''
   let filters = ['html']
   let line = ''
@@ -316,7 +331,7 @@ function! zencoding#expandAbbr(mode, abbr) range
       endif
       let items = zencoding#parseIntoTree(query, type).child
       for item in items
-        let expand .= zencoding#toString(item, type, 0, filters)
+        let expand .= zencoding#toString(item, type, 0, filters, 0, indent)
       endfor
       if zencoding#useFilter(filters, 'e')
         let expand = substitute(expand, '&', '\&amp;', 'g')
@@ -371,7 +386,7 @@ function! zencoding#expandAbbr(mode, abbr) range
         let items = zencoding#parseIntoTree(leader . "{".str."}", type).child
       endif
       for item in items
-        let expand .= zencoding#toString(item, type, 0, filters)
+        let expand .= zencoding#toString(item, type, 0, filters, 0, '')
       endfor
       if zencoding#useFilter(filters, 'e')
         let expand = substitute(expand, '&', '\&amp;', 'g')
@@ -399,8 +414,8 @@ function! zencoding#expandAbbr(mode, abbr) range
       let part = matchstr(line, '\([a-zA-Z0-9:_\-\@|]\+\)$')
     else
       let part = matchstr(line, '\(\S.*\)$')
-      let rtype = zencoding#lang#exists(type) ? type : 'html'
-      let part = zencoding#lang#{rtype}#findTokens(part)
+      let ftype = zencoding#lang#exists(type) ? type : 'html'
+      let part = zencoding#lang#{ftype}#findTokens(part)
     endif
     let rest = getline('.')[len(line):]
     let str = part
@@ -409,9 +424,9 @@ function! zencoding#expandAbbr(mode, abbr) range
       let filters = split(matchstr(str, mx)[1:], '\s*,\s*')
       let str = substitute(str, mx, '', '')
     endif
-    let items = zencoding#parseIntoTree(str, type).child
+    let items = zencoding#parseIntoTree(str, rtype).child
     for item in items
-      let expand .= zencoding#toString(item, type, 0, filters)
+      let expand .= zencoding#toString(item, rtype, 0, filters, 0, indent)
     endfor
     if zencoding#useFilter(filters, 'e')
       let expand = substitute(expand, '&', '\&amp;', 'g')
@@ -610,6 +625,7 @@ function! zencoding#ExpandWord(abbr, type, orig)
   let mx = '|\(\%(html\|haml\|slim\|e\|c\|fc\|xsl\|t\|\/[^ ]\+\)\s*,\{0,1}\s*\)*$'
   let str = a:abbr
   let type = a:type
+  let indent = zencoding#getIndentation(type)
 
   if len(type) == 0 | let type = 'html' | endif
   if str =~ mx
@@ -623,7 +639,7 @@ function! zencoding#ExpandWord(abbr, type, orig)
   let items = zencoding#parseIntoTree(str, a:type).child
   let expand = ''
   for item in items
-    let expand .= zencoding#toString(item, a:type, 0, filters)
+    let expand .= zencoding#toString(item, a:type, 0, filters, 0, indent)
   endfor
   if zencoding#useFilter(filters, 'e')
     let expand = substitute(expand, '&', '\&amp;', 'g')

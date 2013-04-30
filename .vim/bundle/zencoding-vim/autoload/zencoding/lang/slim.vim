@@ -25,7 +25,7 @@ function! zencoding#lang#slim#toString(settings, current, type, inline, filters,
   endif
   if len(current.name) > 0
     let str .= current_name
-    for attr in current.attrs_order
+    for attr in zencoding#util#unique(current.attrs_order)
       if !has_key(current.attr, attr)
         continue
       endif
@@ -47,6 +47,7 @@ function! zencoding#lang#slim#toString(settings, current, type, inline, filters,
         let text = substitute(text, '\%(\\\)\@\<!\(\$\+\)\([^{#]\|$\)', '\=printf("%0".len(submatch(1))."d", itemno+1).submatch(2)', 'g')
         let text = substitute(text, '\${nr}', "\n", 'g')
         let text = substitute(text, '\\\$', '$', 'g')
+        let str = substitute(str, '\$#', text, 'g')
       endif
       for line in split(text, "\n")
         let str .= indent . "| " . line . "\n"
@@ -67,7 +68,7 @@ function! zencoding#lang#slim#toString(settings, current, type, inline, filters,
       endfor
     elseif len(current.child) > 0
       for child in current.child
-        let inner .= zencoding#toString(child, type, inline, filters, itemno)
+        let inner .= zencoding#toString(child, type, inline, filters, itemno, indent)
       endfor
       let inner = substitute(inner, "\n", "\n" . escape(indent, '\'), 'g')
       let inner = substitute(inner, "\n" . escape(indent, '\') . "$", "", 'g')

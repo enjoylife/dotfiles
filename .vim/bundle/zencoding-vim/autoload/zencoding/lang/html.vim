@@ -322,7 +322,7 @@ function! zencoding#lang#html#toString(settings, current, type, inline, filters,
   endif
   if len(current_name) > 0
   let str .= '<' . current_name
-  for attr in current.attrs_order
+  for attr in zencoding#util#unique(current.attrs_order)
     if !has_key(current.attr, attr)
       continue
     endif
@@ -351,6 +351,7 @@ function! zencoding#lang#html#toString(settings, current, type, inline, filters,
       let text = substitute(text, '\%(\\\)\@\<!\(\$\+\)\([^{#]\|$\)', '\=printf("%0".len(submatch(1))."d", itemno+1).submatch(2)', 'g')
       let text = substitute(text, '\${nr}', "\n", 'g')
       let text = substitute(text, '\\\$', '$', 'g')
+      let str = substitute(str, '\("\zs$#\ze"\|\s\zs\$#"\|"\$#\ze\s\)', text, 'g')
     endif
     let str .= text
     let nc = len(current.child)
@@ -370,7 +371,7 @@ function! zencoding#lang#html#toString(settings, current, type, inline, filters,
             let dr = 1
           endif
         endif
-        let inner = zencoding#toString(child, type, 0, filters, itemno)
+        let inner = zencoding#toString(child, type, 0, filters, itemno, indent)
         let inner = substitute(inner, "^\n", "", 'g')
         let inner = substitute(inner, "\n", "\n" . escape(indent, '\'), 'g')
         let inner = substitute(inner, "\n" . escape(indent, '\') . '$', '', 'g')
@@ -546,7 +547,7 @@ function! zencoding#lang#html#balanceTag(flag) range
   endif
   let settings = zencoding#getSettings()
 
-  if a:flag > 0 || abs(a:flag) == 1
+  if a:flag > 0
     let mx = '<\([a-zA-Z][a-zA-Z0-9:_\-]*\)[^>]*>'
     while 1
       let pos1 = searchpos(mx, 'bW')
@@ -596,10 +597,9 @@ function! zencoding#lang#html#balanceTag(flag) range
       endif
     endwhile
   endif
+  call setpos('.', curpos)
   if a:flag == -2 || a:flag == 2
     silent! exe "normal! gv"
-  else
-    call setpos('.', curpos)
   endif
 endfunction
 

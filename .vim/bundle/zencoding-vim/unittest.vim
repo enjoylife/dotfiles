@@ -490,6 +490,18 @@ finish
           'query': "{test case $$$ }*3",
           'result': "test case 001 test case 002 test case 003 ",
         },
+        {
+          'query': "a[title=$#]{foo}",
+          'result': "<a href=\"\" title=\"foo\">foo</a>\n",
+        },
+        {
+          'query': "span.item$*2>{item $}",
+          'result': "<span class=\"item1\">item 1</span>\n<span class=\"item2\">item 2</span>\n",
+        },
+        {
+          'query': "    <div class=\"footer_nav\">\n        <a href=\"#\">nav link</a>\n    </div>$$$$\\<esc>ggVG\\<c-y>,div\\<cr>$$$$",
+          'result': "    <div>\n        <div class=\"footer_nav\">\n            <a href=\"#\">nav link</a>\n        </div>\n    </div>",
+        },
       ],
     },
     {
@@ -528,6 +540,10 @@ finish
         {
           'query': "img[src=/logo.png]$$$$\\<c-y>,\\<c-y>i$$$$",
           'result': "<img src=\"/logo.png\" alt=\"\" />",
+        },
+        {
+          'query': "img[src=http://mattn.kaoriya.net/images/logo.png width=foo height=bar]$$$$\\<c-y>,\\<c-y>i$$$$",
+          'result': "<img src=\"http://mattn.kaoriya.net/images/logo.png\" alt=\"\" width=\"96\" height=\"96\" />",
         },
       ],
     },
@@ -646,6 +662,10 @@ finish
           'query': ".content{Hello!}|haml",
           'result': "%div.content Hello!\n",
         },
+        {
+          'query': "a[title=$#]{foo}",
+          'result': "%a{ :href => \"\", :title => \"foo\" } foo\n",
+        },
       ],
     },
     {
@@ -697,6 +717,10 @@ finish
         {
           'query': ".content{Hello!}|slim",
           'result': "div class=\"content\"\n  | Hello!\n",
+        },
+        {
+          'query': "a[title=$#]{foo}",
+          'result': "a href=\"\" title=\"foo\"\n  | foo\n",
         },
       ],
     },
