@@ -13,7 +13,7 @@ function! zencoding#lang#slim#toString(settings, current, type, inline, filters,
   let inline = a:inline
   let filters = a:filters
   let itemno = a:itemno
-  let indent = a:indent
+  let indent = zencoding#getIndentation(type)
   let dollar_expr = zencoding#getResource(type, 'dollar_expr', 1)
   let str = ""
 
@@ -25,7 +25,7 @@ function! zencoding#lang#slim#toString(settings, current, type, inline, filters,
   endif
   if len(current.name) > 0
     let str .= current_name
-    for attr in zencoding#util#unique(current.attrs_order)
+    for attr in zencoding#util#unique(current.attrs_order + keys(current.attr))
       if !has_key(current.attr, attr)
         continue
       endif
