@@ -40,6 +40,8 @@ set foldmethod=syntax   " Predictable folding
 map f za                " Simpler (un)folding
 map <C-f> gqG           " Easier code formating 
 map <S-f> zR
+"toggle spellchecking
+nn <F7> :setlocal spell! spell?<CR> 
 
 set background=light           " Prefer light in gui
 syntax enable
