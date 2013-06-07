@@ -37,6 +37,7 @@ endif
 "autocmd FileType * if &filetype == 'html' | colorscheme guardian | elseif  &filetype == 'javascript'| colorscheme lucius | endif
 
 set foldmethod=syntax   " Predictable folding
+set foldnestmax=2
 map f za                " Simpler (un)folding
 map <C-f> gqG           " Easier code formating 
 map <S-f> zR
@@ -93,4 +94,11 @@ autocmd BufRead,BufNewFile  *.jinja set filetype=htmldjango
 
 "-A8T8SLWYUk3pb "old astyle pref
 autocmd BufNewFile,BufRead *.c,*.h  set formatprg=astyle\ -A10z3cZEHSk3W3pn
+
+"Golint
+function! s:GoLint()
+    cexpr system("golint " . shellescape(expand('%')))
+    copen
+endfunction
+command! GoLint :call s:GoLint()
 
