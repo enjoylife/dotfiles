@@ -1,0 +1,36 @@
+[user]
+	name = matthew clemens
+	email = matt.d.clemens@gmail.com
+[core]
+	editor = /usr/bin/vim
+	excludesfile = /Users/matt/.gitignore_global
+[color]
+	ui = auto
+[alias]
+    # Speedy 
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    cp = cherry-pick
+
+    # Can never remember
+    ds = diff --staged
+    damnit = commit --amend
+    fuckit = reset HEAD
+    branches = branch -vv
+    authors = shortlog -sn
+    serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
+    serveall = daemon --verbose --export-all --base-path=. --reuseaddr .
+    # Pretty!!
+    plog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+    # Show files ignored by git:
+    ignored = ls-files -o -i --exclude-standard
+
+[core]
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[diff]
+    algorithm = patience
