@@ -1,7 +1,7 @@
 "=============================================================================
 " File: zencoding.vim
 " Author: Yasuhiro Matsumoto <mattn.jp@gmail.com>
-" Last Change: 13-Feb-2013.
+" Last Change: 10-Jun-2013.
 " Version: 0.75
 " WebPage: http://github.com/mattn/zencoding-vim
 " Description: vim plugins for HTML and CSS hi-speed coding.
@@ -66,7 +66,7 @@
 " GetLatestVimScripts: 2981 1 :AutoInstall: zencoding.vim
 " script type: plugin
 
-if &cp || (exists('g:loaded_zencoding_vim') && g:loaded_zencoding_vim)
+if &cp || v:version < 702 | (exists('g:loaded_zencoding_vim') && g:loaded_zencoding_vim)
   finish
 endif
 let g:loaded_zencoding_vim = 1
@@ -180,7 +180,7 @@ function! s:install_plugin_v()
 endfunction
 
 
-if exists('g:user_zen_mode') 
+if exists('g:user_zen_mode')
     let imode = matchstr(g:user_zen_mode, '[ai]')
     let nmode = matchstr(g:user_zen_mode, '[an]')
     let vmode = matchstr(g:user_zen_mode, '[av]')
