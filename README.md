@@ -10,7 +10,7 @@ Installation
      git submodule update
     
     cd ~
-    $ ln -s dotfiles/.vimrc .
-    $ ln -s dotfiles/.vim .
-    $ ln -s dotfiles/.profile .
-    $ ln -s dotfiles/.gitconfig .
+    ln -s dotfiles/.vimrc .
+    ln -s dotfiles/.vim .
+    ln -s dotfiles/.profile .
+    ln -s dotfiles/.gitconfig .
