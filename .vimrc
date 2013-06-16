@@ -1,5 +1,9 @@
 call pathogen#infect()    " Package system
 set rtp+=$GOROOT/misc/vim " For go development (syntax, indentation,etc)
+" Powerline
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+set laststatus=2 " Always display the statusline in all windows
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 "PLUGIN: nerdtree ...Just can't live without in editer file traversal
 nmap <silent> <c-n> :NERDTreeToggle<CR>
@@ -23,16 +27,17 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
 if has('gui_running')
-    set background=light           " Prefer light in gui
     set guioptions-=T              " Remove Toolbar
-    "set guifont=Terminus\ 7        " Terminus is AWESOME
-    set guifont=Menlo\ Regular:h12
-else
-    let g:solarized_termcolors=256 "Pretty even in terminal
+    set guifont=Liberation\ Mono\ for\ Powerline:h11
+    "set background=light           " Prefer light in gui
+    "colorscheme solarized
+else 
+    "let g:solarized_termcolors=256 "Pretty even in terminal
     set t_Co=256                   "Terminal support in general
-    set background=dark            "Prefer dark in terminal
 endif
 
+set background=dark
+colorscheme lucius
 "COLOR: Favorite Color Schemes per filetype
 "autocmd FileType * if &filetype == 'html' | colorscheme guardian | elseif  &filetype == 'javascript'| colorscheme lucius | endif
 
@@ -44,12 +49,10 @@ map <S-f> zR
 "toggle spellchecking
 nn <F7> :setlocal spell! spell?<CR> 
 
-set background=light           " Prefer light in gui
-syntax enable
-colorscheme solarized
 
 filetype plugin indent on " Turn on the indent plugins
 set autoread              " Reload file when changed externally
+syntax enable
 
 set ffs=unix   " EOL character convetion
 set ignorecase " Ignores case when searching

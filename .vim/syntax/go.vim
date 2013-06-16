@@ -83,6 +83,8 @@ hi def link     goComplexes         Type
 " elsewhere. Order matters here.
 syn match       goType              /\<func\>/
 syn match       goDeclaration       /^func\>/
+"syn region      goDeclarationName   start="/^func\s*\(" end=")" 
+"hi def link     goDeclarationName   Funcname
 
 " Predefined functions and values
 syn keyword     goBuiltins          append cap close complex copy delete imag len
@@ -90,7 +92,7 @@ syn keyword     goBuiltins          make new panic print println real recover
 syn keyword     goConstants         iota true false nil
 
 hi def link     goBuiltins          Keyword
-hi def link     goConstants         Keyword
+hi def link     goConstants         Special 
 
 " Comments; their contents
 syn keyword     goTodo              contained TODO FIXME XXX BUG
@@ -133,7 +135,7 @@ hi def link     goCharacter         Character
 
 " Regions
 syn region      goBlock             start="{" end="}" transparent fold
-syn region      goParen             start='(' end=')' transparent
+syn region      goParen             start='(' end=')' transparent fold
 
 " Integers
 syn match       goDecimalInt        "\<\d\+\([Ee]\d\+\)\?\>"

@@ -3,7 +3,7 @@
 " Version: 1.4.7
 
 " mango.vim {{{
-  set t_Co=256
+  "set t_Co=256
   let g:colors_name = "mango"
   let bgcolor = &background
   highlight clear SignColumn
@@ -121,6 +121,9 @@
     hi Todo         guifg=#080808   guibg=#ffd700   gui=NONE      ctermfg=232       ctermbg=220       cterm=NONE
     hi Underlined   guifg=NONE      guibg=NONE      gui=underline ctermfg=NONE      ctermbg=NONE      cterm=underline
     hi Error        guifg=#ff5f00   guibg=#ff0000   gui=NONE      ctermfg=202       ctermbg=196       cterm=NONE
+
+    hi FoldColumn guifg=#bcbcbc     guibg=#4e4e4e
+    hi Folded     guifg=#bcbcbc     guibg=#4e4e4e
   endif
 " }}}
 
