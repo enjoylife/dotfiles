@@ -51,6 +51,7 @@ map <S-f> zR
 nn <F7> :setlocal spell! spell?<CR> 
 
 
+
 filetype plugin indent on " Turn on the indent plugins
 set autoread              " Reload file when changed externally
 syntax enable
