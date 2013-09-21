@@ -15,7 +15,7 @@ sign define dummy
 execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 
 "PLUGIN: syntastic
-let syntastic_mode_map = { 'passive_filetypes': ['html'] }
+let syntastic_mode_map = { 'passive_filetypes': ['html','css','verilog'] }
 
 "PLUGIN: zencoding
 let g:user_zen_expandabbr_key = '<c-z>'
@@ -74,7 +74,7 @@ set showcmd         " Display incomplete commands
 set hlsearch        " Highlight searches
 set incsearch       " Do incremental searching
 set ruler           " Show the cursor position all the time
-set numberwidth=4   " Line numbering takes up 5 spaces
+set numberwidth=4   " Line numbering takes up # spaces
 set ignorecase      " Ignore case when searching
 set wrap            " Stop lines from wrapping
 set linebreak
@@ -89,6 +89,9 @@ map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 
 " Toggle line numbers
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
+autocmd Filetype css setlocal ts=2 sw=2 "tabstop and shiftwidth
+
+autocmd BufNewFile,BufRead *.json set ft=javascript
 
 autocmd FileType go autocmd BufWritePre <buffer> Fmt " go devel
 
