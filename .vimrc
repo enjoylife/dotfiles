@@ -28,7 +28,8 @@ let g:html_indent_style1 = "inc"
 
 if has('gui_running')
     set guioptions-=T              " Remove Toolbar
-    set guifont=Liberation\ Mono\ for\ Powerline:h11
+    "set guifont=Liberation\ Mono\ for\ Powerline:h11
+    set guifont=Liberation\ Mono\ 10
     "set background=light           " Prefer light in gui
     "colorscheme solarized
 else 
